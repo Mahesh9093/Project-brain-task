@@ -5,7 +5,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - REPOSITORY_URI=<your-account-id>.dkr.ecr.ap-south-1.amazonaws.com/brain-task-repo
+      - REPOSITORY_URI=839552922696.dkr.ecr.ap-south-1.amazonaws.com/brain-task-repo
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $REPOSITORY_URI
   build:
     commands:

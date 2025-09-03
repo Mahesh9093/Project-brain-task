@@ -1,6 +1,19 @@
 version: 0.2
 
 phases:
+  install:
+    runtime-versions:
+      docker: 20
+    commands:
+      - echo "Installing kubectl and aws-iam-authenticator..."
+      - curl -s -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.29.0/2024-03-12/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl
+      - mv ./kubectl /usr/local/bin/
+      - curl -s -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/amazon-eks-iam-authenticator/1.29.0/2024-03-12/bin/linux/amd64/aws-iam-authenticator
+      - chmod +x ./aws-iam-authenticator
+      - mv ./aws-iam-authenticator /usr/local/bin/
+      - echo "kubectl and aws-iam-authenticator installed successfully"
+
   pre_build:
     commands:
       - echo "Logging in to Amazon ECR..."
@@ -9,12 +22,14 @@ phases:
       - REPOSITORY_URI=839552922696.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
+
   build:
     commands:
       - echo "Building Docker image..."
       - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
       - echo "Pushing Docker image to ECR..."
       - docker push $REPOSITORY_URI:$IMAGE_TAG
+
   post_build:
     commands:
       - echo "Updating Kubernetes deployment..."
@@ -22,9 +37,8 @@ phases:
       - sed -i "s|<IMAGE>|$REPOSITORY_URI:$IMAGE_TAG|" k8s/deployment.yml
       - kubectl apply -f k8s/deployment.yml
       - kubectl apply -f k8s/service.yml
+
 artifacts:
   files:
     - k8s/deployment.yml
     - k8s/service.yml
-
-

@@ -10,7 +10,7 @@ phases:
   build:
     commands:
       - echo Build Docker image...
-      - docker build -t Brain-task-app .
+      - docker build -t brain-task-app .
       - docker tag brain-task-app:latest $REPOSITORY_URI:latest
   post_build:
     commands:

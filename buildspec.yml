@@ -27,4 +27,4 @@ artifacts:
     - k8s/deployment.yml
     - k8s/service.yml
 
-root@ip-172-31-34-185:/home/ubuntu/Project-b
+

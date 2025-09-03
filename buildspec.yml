@@ -3,26 +3,23 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo "Logging in to Amazon ECR..."
+      - echo Logging in to Amazon ECR...
       - aws --version
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 839552922696.dkr.ecr.ap-south-1.amazonaws.com
-      - REPOSITORY_URI=839552922696.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - REPOSITORY_URI=<your-account-id>.dkr.ecr.ap-south-1.amazonaws.com/brain-task-repo
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $REPOSITORY_URI
   build:
     commands:
-      - echo "Building Docker image..."
-      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
-      - echo "Pushing Docker image to ECR..."
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Build Docker image...
+      - docker build -t Brain-task-app .
+      - docker tag brain-task-app:latest $REPOSITORY_URI:latest
   post_build:
     commands:
-      - echo "Updating Kubernetes deployment..."
-      - aws eks update-kubeconfig --region ap-south-1 --name <YOUR-EKS-CLUSTER-NAME>
-      - sed -i "s|<IMAGE>|$REPOSITORY_URI:$IMAGE_TAG|" k8s/deployment.yml
-      - kubectl apply -f k8s/deployment.yml
-      - kubectl apply -f k8s/service.yml
+      - echo Pushing image to ECR...
+      - docker push $REPOSITORY_URI:latest
+      - echo Writing imagedefinitions.json
+      - printf '[{"name":"brain-task-app","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
+
 artifacts:
   files:
-    - k8s/deployment.yml
-    - k8s/service.yml
+    - imagedefinitions.json
+    - k8s/*.yml

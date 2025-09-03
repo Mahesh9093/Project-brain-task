@@ -1,0 +1,9 @@
+version: 0.0
+resources:
+  - myAppSpec:
+      type: AWS::EKS::Application
+      properties:
+        name: brain-task-app
+        clusterName: brain-task-cluster
+        namespace: default
+        file: k8s/deployment.yml

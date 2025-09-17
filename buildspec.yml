@@ -25,7 +25,8 @@ phases:
   build:
     commands:
       - echo "Building Docker image..."
-      - docker build -t 839552922696.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app .
+      - docker build -t brain-task-app .
+      - docker tag brain-task-app 839552922696.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app
       - echo "Pushing Docker image to ECR..."
       - docker push 839552922696.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app 
 

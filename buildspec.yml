@@ -33,7 +33,7 @@ phases:
     commands:
       - echo "Updating Kubernetes deployment..."
       - aws eks update-kubeconfig --region ap-south-1 --name brain-task-cluster
-      - sed -i "s|<IMAGE>|$REPOSITORY_URI:$IMAGE_TAG|" k8s/deployment.yml
+     
       - kubectl apply -f k8s/deployment.yml
       - kubectl apply -f k8s/service.yml
 

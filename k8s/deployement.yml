@@ -17,3 +17,7 @@ spec:
           image: 839552922696.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app
           ports:
             - containerPort: 80 # ✅ CORRECT
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"  

@@ -17,8 +17,8 @@ phases:
     commands:
       - echo "Logging in to Amazon ECR..."
       - aws --version
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 839552922696.dkr.ecr.ap-south-1.amazonaws.com
-      - REPOSITORY_URI=839552922696.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 662124509009.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app
+      - REPOSITORY_URI=662124509009.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
 
@@ -26,9 +26,9 @@ phases:
     commands:
       - echo "Building Docker image..."
       - docker build -t brain-task-app .
-      - docker tag brain-task-app 839552922696.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app
+      - docker tag brain-task-app 662124509009.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app
       - echo "Pushing Docker image to ECR..."
-      - docker push 839552922696.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app 
+      - docker push 662124509009.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app
 
   post_build:
     commands:

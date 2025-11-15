@@ -34,10 +34,4 @@ phases:
     commands:
       - echo "Updating Kubernetes deployment..."
       - aws eks update-kubeconfig --region ap-south-1 --name brain-task-cluster
-      - kubectl apply -f k8s/deployment.yml
-      - kubectl apply -f k8s/service.yml
-
-artifacts:
-  files:
-    - k8s/deployment.yml
-    - k8s/service.yml
+      

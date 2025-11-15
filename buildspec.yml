@@ -2,12 +2,12 @@ version: 0.2
 
 phases:
   install:
-   
     commands:
       - echo "Installing kubectl and aws-iam-authenticator..."
       - curl -s -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.29.0/2024-03-12/bin/linux/amd64/kubectl
       - chmod +x ./kubectl
       - mv ./kubectl /usr/local/bin/
+
       - curl -s -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/amazon-eks-iam-authenticator/1.29.0/2024-03-12/bin/linux/amd64/aws-iam-authenticator
       - chmod +x ./aws-iam-authenticator
       - mv ./aws-iam-authenticator /usr/local/bin/
@@ -34,7 +34,6 @@ phases:
     commands:
       - echo "Updating Kubernetes deployment..."
       - aws eks update-kubeconfig --region ap-south-1 --name brain-task-cluster
-     
       - kubectl apply -f k8s/deployment.yml
       - kubectl apply -f k8s/service.yml
 

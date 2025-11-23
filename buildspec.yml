@@ -35,6 +35,5 @@ phases:
       - echo "Updating Kubernetes deployment..."
       - aws eks update-kubeconfig --region ap-south-1 --name brain-task-cluster
       - echo "Deploying to Kubernetes..."
-      - kubectl set image deployment/brain-task-app-deployment brain-task-app=662124509009.dkr.ecr.ap-south-1.amazonaws.com/brain-task-app:latest 
-      - kubectl rollout status deployment/brain-task-app-deployment
+      
       
